@@ -2,7 +2,7 @@
   <div id="app">
     <h1>Ma liste de tâches</h1>
 
-    <!-- 1. Zone d'ajout : frappez votre tâche et validez -->
+    <!-- Formulaire d'ajout de tâche : entrez un titre et appuyez sur Entrée ou cliquez sur Ajouter -->
     <div class="add-form">
       <input
         v-model="newTaskTitle"
@@ -17,14 +17,14 @@
       </button>
     </div>
 
-    <!-- 2. Champ de recherche -->
+    <!-- Champ de recherche : filtre les tâches par mot-clé saisi -->
     <input
       v-model="searchQuery"
       placeholder="Rechercher une tâche..."
       class="search-input"
     />
 
-    <!-- 3. Affichage des tâches filtrées -->
+    <!-- Liste des tâches filtrées : affiche uniquement celles qui correspondent à la recherche -->
     <ul>
       <li v-for="task in filteredTasks" :key="task.id">
         {{ task.title }}
@@ -38,21 +38,23 @@ export default {
   name: 'App',
   data() {
     return {
-      tasks: [],
-      newTaskTitle: '',
-      searchQuery: '',
-      nextId: 1,
+      tasks: [],         // Stocke toutes les tâches ajoutées
+      newTaskTitle: '',  // Valeur en cours de saisie dans l'input
+      searchQuery: '',   // Texte utilisé pour filtrer les tâches
+      nextId: 1,         // Générateur d'identifiants uniques pour chaque tâche
     };
   },
   computed: {
+    // Renvoie la liste des tâches dont le titre inclut le texte de recherche
     filteredTasks() {
-      const q = this.searchQuery.trim().toLowerCase();
-      return q
-        ? this.tasks.filter(t => t.title.toLowerCase().includes(q))
+      const query = this.searchQuery.trim().toLowerCase();
+      return query
+        ? this.tasks.filter(task => task.title.toLowerCase().includes(query))
         : this.tasks;
     },
   },
   methods: {
+    // Ajoute une nouvelle tâche si le champ n'est pas vide, puis remet le focus
     addTask() {
       const title = this.newTaskTitle.trim();
       if (!title) return;
@@ -76,18 +78,22 @@ export default {
   color: #333333;
 }
 
+/* Disposition du formulaire d'ajout */
 .add-form {
   display: flex;
   margin-bottom: 1em;
 }
 
+/* Style de l'input de création */
 .input-new {
   flex: 1;
   padding: 0.5em;
   font-size: 1em;
   box-sizing: border-box;
+  color: #000000; /* Texte saisi en noir */
 }
 
+/* Bouton d'ajout */
 .add-form button {
   padding: 0.5em 1em;
   font-size: 1em;
@@ -99,6 +105,7 @@ export default {
   color: #ffffff;
 }
 
+/* Style du champ de recherche */
 .search-input {
   width: 100%;
   padding: 0.5em;
@@ -107,17 +114,20 @@ export default {
   font-size: 1em;
 }
 
+/* Placeholder plus foncé pour meilleure lisibilité */
 .input-new::placeholder,
 .search-input::placeholder {
   color: #666666;
 }
 
+/* Liste sans puces ni marges */
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
+/* Style de chaque élément de tâche */
 li {
   background: #ffffff;
   color: #333333;
